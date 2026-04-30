@@ -8,6 +8,7 @@
   --text: #f6f8fb;
   --muted: #a7b0bf;
   height: 100vh;
+  height: var(--app-height, 100dvh);
   min-height: 0;
   display: grid;
   grid-template-rows: 52px minmax(0, 1fr);
@@ -1442,7 +1443,7 @@ button:disabled {
 
 @media (max-width: 760px) {
   .app-shell {
-    height: 100dvh;
+    height: var(--app-height, 100dvh);
     grid-template-rows: auto minmax(0, 1fr);
     overflow: hidden;
   }
@@ -1505,6 +1506,7 @@ button:disabled {
     z-index: 5;
     min-height: auto;
     padding: 10px 10px 12px;
+    max-height: calc(var(--app-height, 100dvh) * 0.62);
     border-bottom: 1px solid var(--line);
     background:
       radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.08), transparent 28%),
@@ -1538,6 +1540,7 @@ button:disabled {
 
   .phone-frame-shell {
     margin-top: 4px;
+    max-width: calc(var(--app-width, 100vw) - 20px);
   }
 
   .preview-controls {
@@ -1685,7 +1688,7 @@ button:disabled {
   .heart-modal,
   .info-modal {
     width: min(100%, 560px);
-    max-height: calc(100dvh - 20px);
+    max-height: calc(var(--app-height, 100dvh) - 20px);
     overflow: auto;
     border-radius: 14px;
   }
@@ -1888,7 +1891,7 @@ button:disabled {
 
 @media (max-width: 760px) {
   .app-shell {
-    height: 100dvh;
+    height: var(--app-height, 100dvh);
     grid-template-rows: auto minmax(0, 1fr);
   }
 

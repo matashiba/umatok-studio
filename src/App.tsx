@@ -597,22 +597,52 @@ function App() {
   ])
 
   useEffect(() => {
+    function updateViewportSize() {
+      const viewport = window.visualViewport
+      const width = viewport?.width || window.innerWidth
+      const height = viewport?.height || window.innerHeight
+      document.documentElement.style.setProperty('--app-width', `${width}px`)
+      document.documentElement.style.setProperty('--app-height', `${height}px`)
+    }
+    updateViewportSize()
+    window.visualViewport?.addEventListener('resize', updateViewportSize)
+    window.visualViewport?.addEventListener('scroll', updateViewportSize)
+    window.addEventListener('resize', updateViewportSize)
+    window.addEventListener('orientationchange', updateViewportSize)
+    return () => {
+      window.visualViewport?.removeEventListener('resize', updateViewportSize)
+      window.visualViewport?.removeEventListener('scroll', updateViewportSize)
+      window.removeEventListener('resize', updateViewportSize)
+      window.removeEventListener('orientationchange', updateViewportSize)
+    }
+  }, [])
+
+  useEffect(() => {
     const panel = previewPanelRef.current
     if (!panel) return undefined
     const currentPanel = panel
     function updatePreviewScale() {
       const bounds = currentPanel.getBoundingClientRect()
-      const availableWidth = Math.max(320, bounds.width - 48)
-      const availableHeight = Math.max(360, bounds.height - 132)
-      setPreviewScale(clamp(Math.min(1, availableWidth / previewFrameWidth, availableHeight / previewFrameHeight), 0.52, 1))
+      const viewportHeight = window.visualViewport?.height || window.innerHeight
+      const isMobile = window.matchMedia('(max-width: 760px)').matches
+      const availableWidth = Math.max(280, bounds.width - (isMobile ? 20 : 48))
+      const mobilePreviewLimit = Math.max(280, viewportHeight * 0.58 - 78)
+      const availableHeight = isMobile ? mobilePreviewLimit : Math.max(360, bounds.height - 132)
+      setPreviewScale(clamp(Math.min(1, availableWidth / previewFrameWidth, availableHeight / previewFrameHeight), 0.42, 1))
     }
     updatePreviewScale()
     const observer = new ResizeObserver(updatePreviewScale)
     observer.observe(currentPanel)
+    window.visualViewport?.addEventListener('resize', updatePreviewScale)
+    window.visualViewport?.addEventListener('scroll', updatePreviewScale)
     window.addEventListener('resize', updatePreviewScale)
+    window.addEventListener('orientationchange', updatePreviewScale)
     return () => {
       observer.disconnect()
+      window.visualViewport?.removeEventListener('resize', updatePreviewScale)
+      window.visualViewport?.removeEventListener('scroll', updatePreviewScale)
       window.removeEventListener('resize', updatePreviewScale)
+      window.removeEventListener('orientationchange', updatePreviewScale)
     }
   }, [])
 
