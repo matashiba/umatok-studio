@@ -2311,7 +2311,7 @@ function App() {
             <div className="comment-rows">
               {comments.length === 0 && <div className="empty-comments">コメントなし</div>}
               {comments.map((comment, index) => (
-                <div className="comment-row" key={`${comment.user}-${index}`}>
+                <div className="comment-row" key={index}>
                   <input
                     aria-label={`コメント${index + 1}のユーザー名`}
                     value={comment.user}
