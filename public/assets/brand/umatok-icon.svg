@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Umatok">
+  <defs>
+    <linearGradient id="umatok-bg" x1="34" x2="222" y1="24" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff5d7f"/>
+      <stop offset=".48" stop-color="#8a5cff"/>
+      <stop offset="1" stop-color="#00bac7"/>
+    </linearGradient>
+    <linearGradient id="umatok-shine" x1="82" x2="188" y1="52" y2="210" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9fbff"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#141b2b" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="256" height="256" rx="58" fill="#111923"/>
+  <circle cx="194" cy="52" r="18" fill="#54ffd6" opacity=".9"/>
+  <circle cx="48" cy="196" r="12" fill="#ffcf5a" opacity=".9"/>
+  <path fill="url(#umatok-bg)" d="M66 55h82c37.6 0 68 30.4 68 68v10c0 37.6-30.4 68-68 68H66V55Z" filter="url(#soft-shadow)"/>
+  <path fill="#111923" d="M95 88h28v57.6c0 17.2 8.8 28 24.2 28 15.5 0 24.2-10.8 24.2-28V88h28v58.9c0 33.6-20.7 53.8-52.2 53.8S95 180.5 95 146.9V88Z"/>
+  <path fill="url(#umatok-shine)" d="M73 55h56v22H95v67.2c0 30.1 19.8 50.8 52.2 50.8 32.5 0 52.2-20.7 52.2-50.8V95h16v38c0 37.6-30.4 68-68 68H66V62c0-3.9 3.1-7 7-7Z" opacity=".94"/>
+  <path fill="#ffffff" d="M42 94c14.5-18.9 29.9-28.1 51.2-30.1-13.1 7.3-21.7 17.3-27.6 31.2L42 94Z" opacity=".4"/>
+</svg>

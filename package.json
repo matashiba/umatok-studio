@@ -1,0 +1,58 @@
+{
+  "name": "tiktok-style-collage",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Umatok style vertical collage editor",
+  "author": "Umatok Studio",
+  "productName": "Umatok Studio",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "app": "npm run build && electron .",
+    "build": "tsc -b && vite build",
+    "dist:win": "npm run build && electron-builder --win dir",
+    "dist:portable": "npm run build && electron-builder --win portable",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.umatok.studio",
+    "productName": "Umatok Studio",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        "dir"
+      ]
+    }
+  },
+  "dependencies": {
+    "html-to-image": "^1.11.13",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.5.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.58.2",
+    "vite": "^8.0.10"
+  }
+}
