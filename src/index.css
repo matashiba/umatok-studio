@@ -8,6 +8,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #11161d;
+}
+
+html {
+  min-height: 100%;
+  background-color: #11161d;
+  overscroll-behavior: none;
 }
 
 * {
@@ -17,6 +24,10 @@
 body {
   margin: 0;
   overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #11161d;
+  overscroll-behavior: none;
 }
 
 button,
@@ -31,5 +42,7 @@ button {
 
 #root {
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
+  background-color: #11161d;
 }
