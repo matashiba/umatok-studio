@@ -221,9 +221,32 @@ input[type='range'] {
 .clip-list {
   display: grid;
   gap: 8px;
-  max-height: 160px;
-  overflow: auto;
-  padding-right: 4px;
+  max-height: clamp(132px, 24vh, 220px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+  scrollbar-color: rgba(255, 71, 120, 0.72) rgba(255, 255, 255, 0.08);
+  scrollbar-width: thin;
+}
+
+.clip-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.clip-list::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.clip-list::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(24, 31, 40, 0.98);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), #ff789b);
+}
+
+.clip-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff6a91, #ff94ae);
 }
 
 .clip-row {
@@ -1544,9 +1567,9 @@ button:disabled {
   }
 
   .clip-list {
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
+    max-height: min(34dvh, 280px);
+    overflow-y: auto;
+    padding-right: 6px;
   }
 
   .clip-row {
@@ -1891,6 +1914,12 @@ button:disabled {
 
   .comment-section {
     overflow: visible;
+  }
+
+  .clip-list {
+    max-height: min(34dvh, 280px);
+    overflow-y: auto;
+    padding-right: 6px;
   }
 
   .preview-controls {
