@@ -682,7 +682,7 @@ function App() {
       case 'topTabs':
         return { x: 120 + currentLayout.topTabsX, y: 12 + currentLayout.topTabsY, width: 150, height: 36 }
       case 'viewer':
-        return { x: 300 + currentLayout.viewerX, y: 13 + currentLayout.viewerY, width: 55, height: 27 }
+        return { x: 295 + currentLayout.viewerX, y: 13 + currentLayout.viewerY, width: 62, height: 27 }
       case 'creator':
         return { x: 16 + currentLayout.creatorX, y: 56 + currentLayout.creatorY, width: 302, height: 104 }
       case 'railAvatar':
@@ -1496,16 +1496,16 @@ function App() {
     ctx.fillRect(px(225 + layout.topTabsX), py(40 + layout.topTabsY), px(20), py(2))
 
     ctx.textAlign = 'right'
-    drawRoundRect(ctx, px(300 + layout.viewerX), py(13 + layout.viewerY), px(55), py(27), px(13.5))
+    drawRoundRect(ctx, px(295 + layout.viewerX), py(13 + layout.viewerY), px(62), py(27), px(13.5))
     ctx.fillStyle = 'rgba(255,255,255,0.18)'
     ctx.fill()
     ctx.fillStyle = '#48f2a3'
     ctx.beginPath()
-    ctx.arc(px(315 + layout.viewerX), py(27 + layout.viewerY), px(3.2), 0, Math.PI * 2)
+    ctx.arc(px(310 + layout.viewerX), py(27 + layout.viewerY), px(3.2), 0, Math.PI * 2)
     ctx.fill()
     ctx.fillStyle = '#fff'
     ctx.font = `900 ${px(11.5)}px system-ui, sans-serif`
-    ctx.fillText(viewerCount, px(347 + layout.viewerX), py(27 + layout.viewerY))
+    ctx.fillText(viewerCount, px(350 + layout.viewerX), py(27 + layout.viewerY))
   }
 
   function drawActionRail(ctx: CanvasRenderingContext2D, elapsedMs: number) {
