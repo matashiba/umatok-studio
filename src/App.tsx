@@ -39,6 +39,11 @@ type DragState = {
   startY: number
 }
 
+type PinchState = {
+  startDistance: number
+  startScale: number
+}
+
 type AvatarDragState = {
   pointerId: number
   startClientX: number
@@ -298,6 +303,12 @@ function createClipId() {
   return `clip-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 }
 
+function getPointerDistance(points: Array<{ x: number; y: number }>) {
+  if (points.length < 2) return 0
+  const [first, second] = points
+  return Math.hypot(second.x - first.x, second.y - first.y)
+}
+
 function escapeCsvCell(value: string) {
   return `"${value.replaceAll('"', '""')}"`
 }
@@ -381,6 +392,8 @@ function drawHeartPath(ctx: CanvasRenderingContext2D, size: number) {
 
 function App() {
   const dragState = useRef<DragState | null>(null)
+  const mediaPointers = useRef(new Map<number, { x: number; y: number }>())
+  const pinchState = useRef<PinchState | null>(null)
   const avatarDragState = useRef<AvatarDragState | null>(null)
   const layoutDragState = useRef<LayoutDragState | null>(null)
   const animationStartRef = useRef(performance.now())
@@ -1259,9 +1272,13 @@ function App() {
   }
 
   function beginMediaDrag(event: PointerEvent<HTMLDivElement>) {
+    mediaPointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
     if (isLayoutEditMode) {
       const part = hitTestLayoutPart(getPointerInPreview(event))
-      if (!part) return
+      if (!part) {
+        mediaPointers.current.delete(event.pointerId)
+        return
+      }
       event.preventDefault()
       event.currentTarget.setPointerCapture(event.pointerId)
       layoutDragState.current = {
@@ -1273,9 +1290,21 @@ function App() {
       }
       return
     }
-    if (!insert && !activeClip) return
+    if (!insert && !activeClip) {
+      mediaPointers.current.delete(event.pointerId)
+      return
+    }
     event.preventDefault()
     event.currentTarget.setPointerCapture(event.pointerId)
+    if (mediaPointers.current.size >= 2) {
+      const distance = getPointerDistance(Array.from(mediaPointers.current.values()))
+      pinchState.current = {
+        startDistance: distance,
+        startScale: mediaScale,
+      }
+      dragState.current = null
+      return
+    }
     dragState.current = {
       pointerId: event.pointerId,
       startClientX: event.clientX,
@@ -1286,6 +1315,9 @@ function App() {
   }
 
   function moveMedia(event: PointerEvent<HTMLDivElement>) {
+    if (mediaPointers.current.has(event.pointerId)) {
+      mediaPointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+    }
     const layoutDrag = layoutDragState.current
     if (layoutDrag && layoutDrag.pointerId === event.pointerId) {
       event.preventDefault()
@@ -1293,6 +1325,15 @@ function App() {
       const deltaX = ((event.clientX - layoutDrag.startClientX) / bounds.width) * previewWidth
       const deltaY = ((event.clientY - layoutDrag.startClientY) / bounds.height) * previewHeight
       setLayout(() => moveLayoutPart(layoutDrag.startLayout, layoutDrag.part, deltaX, deltaY))
+      return
+    }
+    const pinch = pinchState.current
+    if (pinch && mediaPointers.current.size >= 2) {
+      event.preventDefault()
+      const distance = getPointerDistance(Array.from(mediaPointers.current.values()))
+      if (pinch.startDistance > 0) {
+        setMediaScale(clamp(Math.round(pinch.startScale * (distance / pinch.startDistance)), 80, 220))
+      }
       return
     }
     const drag = dragState.current
@@ -1307,6 +1348,10 @@ function App() {
   }
 
   function endMediaDrag(event: PointerEvent<HTMLDivElement>) {
+    mediaPointers.current.delete(event.pointerId)
+    if (mediaPointers.current.size < 2) {
+      pinchState.current = null
+    }
     if (layoutDragState.current?.pointerId === event.pointerId) {
       layoutDragState.current = null
     }
